@@ -122,7 +122,7 @@ LOCK TABLES `fighter` WRITE;
 /*!40000 ALTER TABLE `fighter` DISABLE KEYS */;
 INSERT INTO `fighter` VALUES
 (1,'fighter_one',50,0,5,2,4,5,7),
-(2,'cobra',50,0,5,2,4,3,8);
+(2,'cobra',50,40,5,2,4,3,8);
 /*!40000 ALTER TABLE `fighter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,8 +280,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fighter_add_points`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fighter_add_points`(fighter_id_input int unsigned, points_input int unsigned)
+    MODIFIES SQL DATA
 BEGIN
+	update fighter 
+	set points = points + points_input
+	where fighter.id = fighter_id_input;
+	commit;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -318,4 +323,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-28 20:57:15
+-- Dump completed on 2022-09-28 21:07:59
