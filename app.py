@@ -252,6 +252,7 @@ def fighter_moves(fighter_id):
 moves = fighter_moves(fighter_id)
 
 
+
 def beat_opponent():
     print('All the available moves for your fighter')
     moves_available = []
