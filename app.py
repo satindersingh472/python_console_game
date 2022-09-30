@@ -1,4 +1,5 @@
 # importing helpers from module to use in app.py
+from operator import indexOf
 from dbhelpers import conn_exe_close
 
 # wherever the conn_exe_function will get used it will take 2 arguments
@@ -80,27 +81,61 @@ def login_signup():
 
 client_result = login_signup()
 client_id = client_result[0][0]
+client_name = client_result[0][1]
 # print(client_id)
 # print(client[0][0], client[0][1].decode('utf-8'))
 # ---------------------------------------------------------------------------------------------------------------
 
+def all_moves():
+    results = conn_exe_close('call all_moves()',[])
+    if(results):
+        return results
+
 def fighters_of_client(client_id):
     result = conn_exe_close('call fighters_of_client(?)',[client_id])
-    return result
+    if(len(result) != 0):
+        return result
+    elif(len(result) == 0):
+        print('No fighter exists for ',client_name)
 
 def create_fighter(client_id):
-    while(True):
-        print('Please pick a fighter or create a new fighter')
-        print('Option 1 to pick an existing fighter...')
-        print('Option 2 to create a new fighter..')
-        user_input = input('Please enter option 1 or 2 :  ')
-
-        if(user_input == '1'):
-            result = fighters_of_client(client_id)
-            return result
-
+    print('Please add the name and 4 moves for fighter')
+    name = input('Enter the name for your fighter:  ')
+    results =  all_moves()
+    count = 0
+    for result in results:
+        count += 1
+        print(result[1].decode('utf-8'),'  No:', count)
+        print('Lower Damage Range: ', result[2].decode('utf-8'))
+        print('Upper Damage Range: ', result[3].decode('utf-8'))
+        print('--------------------------------')
+        while(True):
+            print('Please pick any of the 4 moves from the above by typing their move number')
+            move_one = input('Enter move number 1: ')
+            move_two = input('Enter move number 2: ')
+            move_three = input('Enter move number 3: ')
+            move_four = input('Enter move number 4: ')
+            moves = [move_one,move_two,move_three,move_four]
+            for move in moves:
+                move = int(move)
+                if(move >= 1 and move <= len(results)):
+                    added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
+                    return added_fighter
+                elif(move <= 0 or move > len(results)):
+                    print('Not a valid entry for move')
 
 create_fighter(client_id)
 
+# def pick_create_fighter(client_id):
+#     while(True):
+#         print('Please pick a fighter or create a new fighter')
+#         print('Option 1 to pick an existing fighter...')
+#         print('Option 2 to create a new fighter..')
+#         user_input = input('Please enter option 1 or 2 :  ')
 
+#         if(user_input == '1'):
+#             result = fighters_of_client(client_id)
+#             if(result):
+#                 return result
+#             elif(not result):
 
