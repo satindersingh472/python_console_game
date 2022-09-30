@@ -254,12 +254,22 @@ moves = fighter_moves(fighter_id)
 
 def beat_opponent():
     print('All the available moves for your fighter')
+    moves_available = []
     for move in moves:
         print('move ID:',move[0],' move Name:',move[1].decode('utf-8'))
         print('Lower damage range:',move[2].decode('utf-8'),' Upper damage range:',move[3].decode('utf-8'))
         print('-------------------------------------------------')
+        moves_available.append(move[0])
     while(True):
         move_input = input('Please enter the move ID to attack: ')
+        move_input = int(move_input)
+        if(move_input in moves_available):
+            print('move is correct')
+            break
+        elif(move_input not in moves_available):
+            print('Please select the valid move from moves available for this fighter')
+            print(moves_available)
+            continue
 
 
 beat_opponent()
