@@ -273,7 +273,7 @@ def pick_move(fighter_id):
             print(moves_available)
             continue
 
-def damage_done(fighter_id):
+def random_damage(fighter_id):
     while(True):
         move = pick_move(fighter_id)
         move_values = specific_move(move)
@@ -283,5 +283,14 @@ def damage_done(fighter_id):
             random_number = randint(value_one, value_two)
             return random_number
 
-damage_power =  damage_done(fighter_id)
+def health_opponent_before(opponent_id):
+    health = conn_exe_close('call health_opponent_before(?)',[opponent_id])
+    return health
+
+
+def damage_to_opponent():
+
+
+
+damage_power =  random_damage(fighter_id)
 print(damage_power)
