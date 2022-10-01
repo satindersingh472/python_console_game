@@ -307,7 +307,7 @@ def opponent_pick_move(opponent_id):
         print('Lower damage range:',move[2].decode('utf-8'),' Upper damage range:',move[3].decode('utf-8'))
         print('-------------------------------------------------')
     random_number = opponent_random_selected_move(moves_available)
-    move_selected = input(random_number)
+    move_selected = random_number
     return move_selected
 
 # opponent_pick_move(opponent_id)
@@ -357,7 +357,7 @@ def damage_to_opponent(fighter_id,opponent_id):
 new_health_opponent = damage_to_opponent(fighter_id,opponent_id)
 
 # health user will return the health of a user befor or every attack
-def health_user_before():
+def health_user_before(fighter_id):
     health = conn_exe_close('call health_user_before(?)',[fighter_id])
     return health
 # health user after will update the new health to the database and return the new health
@@ -365,9 +365,19 @@ def health_user_after(fighter_id, new_health_fighter):
     health_after = conn_exe_close('call health_user_after',[fighter_id, new_health_fighter])
     return health_after
 
+def random_damage_number_by_opponent(opponent_id):
+    random_move = opponent_pick_move(opponent_id)
+    move_values = specific_move(random_move)
+    if(move_values):
+        value_one = int(move_values[0][0].decode('utf-8'))
+        value_two = int(move_values[0][1].decode('utf-8'))
+        random_number = randint(value_one, value_two)
+        return random_number
 
-
-# def check_to_win():
-#     if
-
+def damage_to_user(opponent_id, fighter_id):
+    damage = random_damage_number_by_opponent(opponent_id)
+    health_before = health_user_before(fighter_id)
+    new_health = health_before[0][0] - damage
+    health_after = health_user_after(fighter_id, new_health)
+    return health_after
 
