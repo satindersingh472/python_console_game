@@ -1,4 +1,5 @@
 from random import *
+import secrets
 # importing helpers from module to use in app.py
 from operator import indexOf
 from dbhelpers import conn_exe_close
@@ -287,6 +288,29 @@ def pick_move(fighter_id):
             print('Please select the valid move from moves available for this fighter')
             print(moves_available)
             continue
+# return opponent moves with the id of opponent
+def opponent_moves(opponent_id):
+    moves = conn_exe_close('call opponent_moves(?)',[opponent_id])
+    return moves
+# returns random move number from available moves for the selected opponent
+def opponent_random_selected_move(list):
+    random_number = secrets.choice(list)
+    return random_number
+# selecting the move for opponent with the help of two functions
+# opponent moves and opponent random selected move
+def opponent_pick_move(opponent_id):
+    moves = opponent_moves(opponent_id)
+    moves_available = []
+    for move in moves:
+        moves_available.append(move[0])
+        print('move ID:',move[0],' move Name:',move[1].decode('utf-8'))
+        print('Lower damage range:',move[2].decode('utf-8'),' Upper damage range:',move[3].decode('utf-8'))
+        print('-------------------------------------------------')
+    random_number = opponent_random_selected_move(moves_available)
+    move_selected = input(random_number)
+    return move_selected
+
+# opponent_pick_move(opponent_id)
 
 # random damage by player will return the random number 
 # from the lower and upper range of move selected by player or user
@@ -332,9 +356,18 @@ def damage_to_opponent(fighter_id,opponent_id):
 
 new_health_opponent = damage_to_opponent(fighter_id,opponent_id)
 
-def
+# health user will return the health of a user befor or every attack
+def health_user_before():
+    health = conn_exe_close('call health_user_before(?)',[fighter_id])
+    return health
+# health user after will update the new health to the database and return the new health
+def health_user_after(fighter_id, new_health_fighter):
+    health_after = conn_exe_close('call health_user_after',[fighter_id, new_health_fighter])
+    return health_after
 
-def check_to_win():
-    if
+
+
+# def check_to_win():
+#     if
 
 
