@@ -1,4 +1,4 @@
-
+from random import *
 # importing helpers from module to use in app.py
 from operator import indexOf
 from dbhelpers import conn_exe_close
@@ -82,7 +82,7 @@ def login_signup():
 
 client_result = login_signup()
 client_id = client_result[0][0]
-# client_name = client_result[0][1]
+client_name = client_result[0][1]
 # # print(client_id)
 # print(client[0][0], client[0][1].decode('utf-8'))
 # ---------------------------------------------------------------------------------------------------------------
@@ -249,11 +249,13 @@ def fighter_moves(fighter_id):
     moves = conn_exe_close('call fighter_moves(?)',[fighter_id])
     return moves
 
-moves = fighter_moves(fighter_id)
+def specific_move(move_id):
+    result = conn_exe_close('call specific_move(?)',[move_id])
+    return result
 
 
-
-def beat_opponent():
+def pick_move(fighter_id):
+    moves = fighter_moves(fighter_id)
     print('All the available moves for your fighter')
     moves_available = []
     for move in moves:
@@ -265,12 +267,21 @@ def beat_opponent():
         move_input = input('Please enter the move ID to attack: ')
         move_input = int(move_input)
         if(move_input in moves_available):
-            print('move is correct')
-            break
+            return move_input
         elif(move_input not in moves_available):
             print('Please select the valid move from moves available for this fighter')
             print(moves_available)
             continue
 
+def damage_done(fighter_id):
+    while(True):
+        move = pick_move(fighter_id)
+        move_values = specific_move(move)
+        if(move_values):
+            value_one = int(move_values[0][0].decode('utf-8'))
+            value_two = int(move_values[0][1].decode('utf-8'))
+            random_number = randint(value_one, value_two)
+            return random_number
 
-beat_opponent()
+damage_power =  damage_done(fighter_id)
+print(damage_power)
