@@ -83,7 +83,7 @@ def login_signup():
 
 # client_result = login_signup()
 # client_id = client_result[0][0]
-client_name = client_result[0][1]
+# client_name = client_result[0][1]
 # # print(client_id)
 # print(client[0][0], client[0][1].decode('utf-8'))
 # ---------------------------------------------------------------------------------------------------------------
@@ -260,10 +260,11 @@ def points_user(diff):
 
 # grace user will take difficulty level and fighter id
 # to produce points and update them to the database for the specific fighter
-def grace_user(diff_level,fighter_id):
-    points = points_user(diff_level)
-    total_points = conn_exe_close('call update_user_points(?,?)',[fighter_id,points])
-    return total_points
+def grace_user(winner,diff_level,fighter_id):
+    if(winner == 'user'):
+        points = points_user(diff_level)
+        total_points = conn_exe_close('call update_user_points(?,?)',[fighter_id,points])
+        return total_points
 
 # user_score =  diff_level()
 # grace_user(user_score,fighter_id)
@@ -272,21 +273,22 @@ def grace_user(diff_level,fighter_id):
 # if level is 2 then extra 5 health points will get deducted from fighters health
 # if level is 3 then extra 10 health points will get deducted from health of fighter
 def grace_opponent(fighter_id,diff_level):
-    original_health = conn_exe_close('call health_user_before(?)',[fighter_id])
+    opponent_health = conn_exe_close('call health_user_before(?)',[fighter_id])
+    original_health = opponent_health[0][0]
     if(diff_level == 1):
         new_health = original_health + 10
         updated_health_db = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health])
-        return updated_health_db
+        return updated_health_db[0][0]
     elif(diff_level == 2):
         new_health = original_health - 5
         updated_health_db = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health])        
-        return updated_health_db
+        return updated_health_db[0][0]
     elif(diff_level == 3):
         new_health = original_health - 10
         updated_health_db = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health])        
-        return updated_health_db
+        return updated_health_db[0][0]
 
-
+grace_opponent(16,2)
 
 # user moves section starts here
 # ------------------------------------------------------------------------------------------------------------ 
@@ -393,7 +395,8 @@ def damage_to_opponent(fighter_id,opponent_id):
     health_before = health_opponent_before(opponent_id)
     new_health_opponent = health_before[0][0] - damage
     health_after = health_opponent_after(opponent_id,new_health_opponent )
-    return health_after
+    return health_after[0][0]
+
 
 # new_health_opponent = damage_to_opponent(fighter_id,opponent_id)
 
@@ -418,7 +421,7 @@ def health_user_before(fighter_id):
     return health
 # health user after will update the new health to the database and return the new health
 def health_user_after(fighter_id, new_health_fighter):
-    health_after = conn_exe_close('call health_user_after',[fighter_id, new_health_fighter])
+    health_after = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health_fighter])
     return health_after
 
 
@@ -430,9 +433,14 @@ def damage_to_user(opponent_id, fighter_id):
     health_before = health_user_before(fighter_id)
     new_health = health_before[0][0] - damage
     health_after = health_user_after(fighter_id, new_health)
-    return health_after
+    return health_after[0][0]
 
-def check_winner(health_opponent, health_fighter)
+def check_winner(health_opponent, health_user):
+    if(health_opponent > health_user):
+        return 'opponent'
+    elif(health_user > health_opponent):
+        return 'user'
+
 
 def play_game():
     client_result = login_signup()
@@ -442,6 +450,10 @@ def play_game():
     diff_level = difficulty_level()
     health_opponent = damage_to_opponent(fighter_id,opponent_id)
     damage_to_user(opponent_id,fighter_id)
-    health_fighter = grace_opponent(fighter_id,diff_level)
+    health_user = grace_opponent(fighter_id,diff_level)
+    winner = check_winner(health_opponent,health_user)
+    points_user_fighter = grace_user(winner,diff_level,fighter_id)
+    print(points_user_fighter)
 
+play_game()
 
