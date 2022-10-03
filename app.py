@@ -273,8 +273,8 @@ def grace_user(winner,diff_level,fighter_id):
 # if level is 2 then extra 5 health points will get deducted from fighters health
 # if level is 3 then extra 10 health points will get deducted from health of fighter
 def grace_opponent(fighter_id,diff_level):
-    opponent_health = conn_exe_close('call health_user_before(?)',[fighter_id])
-    original_health = opponent_health[0][0]
+    fighter_health = conn_exe_close('call health_user_before(?)',[fighter_id])
+    original_health = fighter_health[0][0]
     if(diff_level == 1):
         new_health = original_health + 10
         updated_health_db = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health])
@@ -288,7 +288,6 @@ def grace_opponent(fighter_id,diff_level):
         updated_health_db = conn_exe_close('call health_user_after(?,?)',[fighter_id, new_health])        
         return updated_health_db[0][0]
 
-grace_opponent(16,2)
 
 # user moves section starts here
 # ------------------------------------------------------------------------------------------------------------ 
@@ -437,8 +436,10 @@ def damage_to_user(opponent_id, fighter_id):
 
 def check_winner(health_opponent, health_user):
     if(health_opponent > health_user):
+        print('Opponent has won this turn')
         return 'opponent'
     elif(health_user > health_opponent):
+        print('User has won this turn')
         return 'user'
 
 
