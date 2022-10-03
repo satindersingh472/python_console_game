@@ -75,7 +75,7 @@ CREATE TABLE `computer_fighter` (
 
 LOCK TABLES `computer_fighter` WRITE;
 /*!40000 ALTER TABLE `computer_fighter` DISABLE KEYS */;
-INSERT INTO `computer_fighter` VALUES (2,'cpu',46,4,6,8,10);
+INSERT INTO `computer_fighter` VALUES (2,'cpu',17,4,6,8,10);
 /*!40000 ALTER TABLE `computer_fighter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +116,7 @@ CREATE TABLE `fighter` (
 
 LOCK TABLES `fighter` WRITE;
 /*!40000 ALTER TABLE `fighter` DISABLE KEYS */;
-INSERT INTO `fighter` VALUES (3,'dragon',50,0,39,3,5,6,7),(6,'dog',50,0,39,3,4,5,7),(15,'gugugug',50,0,39,3,5,6,8),(16,'tom',50,0,39,4,5,6,7),(24,'dkdkdk',50,0,39,5,7,8,10),(25,'dkdd',50,0,39,4,7,8,4),(28,'dldldldl',50,0,39,3,7,6,5),(29,'sasasa',50,0,39,5,8,7,10),(30,'dldldlddl',50,4,39,5,4,7,9),(31,'practice',50,0,39,3,5,7,9),(32,'ddduuu',50,0,39,3,5,6,8),(33,'gini',50,0,50,5,7,8,9),(35,'ddddddddddddddddd',50,0,39,3,4,5,6),(40,'lalalal',10,7,51,3,5,6,7);
+INSERT INTO `fighter` VALUES (3,'dragon',50,0,39,3,5,6,7),(6,'dog',50,0,39,3,4,5,7),(15,'gugugug',50,0,39,3,5,6,8),(16,'tom',32,1,39,4,5,6,7),(24,'dkdkdk',50,0,39,5,7,8,10),(25,'dkdd',50,0,39,4,7,8,4),(28,'dldldldl',50,0,39,3,7,6,5),(29,'sasasa',34,0,39,5,8,7,10),(30,'dldldlddl',39,6,39,5,4,7,9),(31,'practice',50,0,39,3,5,7,9),(32,'ddduuu',39,4,39,3,5,6,8),(33,'gini',50,0,50,5,7,8,9),(35,'ddddddddddddddddd',50,0,39,3,4,5,6),(40,'lalalal',10,7,51,3,5,6,7);
 /*!40000 ALTER TABLE `fighter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -546,4 +546,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-01 10:01:32
+-- Dump completed on 2022-10-03  5:52:38
