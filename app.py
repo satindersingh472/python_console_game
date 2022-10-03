@@ -219,13 +219,23 @@ def choose_opponent():
     print('choose the available opponent:')
     # it will call the show opponent to get opponents and then print
     opponents = show_opponent()
+    opponents_available = []
     if(opponents):
         # print all the opponents 
         for opponent in opponents:
+            opponents_available.append(opponent[0])
             print('opponent ID:',opponent[0],'Name:',opponent[1].decode('utf-8'),'Health: ',opponent[2])
         # ask for input for the opponent
-        selected_opponent = input('To select the opponent,Enter the Opponent ID: ')
-        return selected_opponent
+        while(True):
+            selected_opponent = input('To select the opponent,Enter the Opponent ID: ')
+            selected_opponent = int(selected_opponent)
+            if(selected_opponent in opponents_available):
+                return selected_opponent
+            else:
+                print('Error: Invalid opponent id entered')
+                print('Please choose one of the opponents from the list')
+                print(opponents_available)
+                
 
 # opponent_id = choose_opponent()
 
@@ -446,6 +456,7 @@ def check_winner(health_opponent, health_user):
 def play_game():
     client_result = login_signup()
     client_id = client_result[0][0]
+    client_name = client_result[0][0]
     fighter_id =  pick_create_fighter(client_id)
     opponent_id = choose_opponent()
     diff_level = difficulty_level()
@@ -454,7 +465,7 @@ def play_game():
     health_user = grace_opponent(fighter_id,diff_level)
     winner = check_winner(health_opponent,health_user)
     points_user_fighter = grace_user(winner,diff_level,fighter_id)
-    print(points_user_fighter)
+    print('Points for',client_name,':', points_user_fighter)
 
 play_game()
 
