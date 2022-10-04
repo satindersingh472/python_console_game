@@ -106,6 +106,10 @@ def fighters_of_client(client_id):
         print('No fighter exists for ')
         print('---------------------------------------------------')
 
+# check list will compare parent list with child list
+# it will check for every item in child list exists in parent list
+# if everything is included then it will not execute the false return
+# after looping and the statements stays false it will return true
 def check_lists(parent_list,child_list):
     for item in child_list:
         if item not in parent_list:
@@ -141,6 +145,7 @@ def create_fighter(client_id):
             move_four = input('Enter number 4: ')
             move_four = int(move_four)
             moves = [move_one,move_two,move_three,move_four]
+            # check if moves are valid and from one of the option available
             compare_moves = check_lists(available_moves,moves)
             if(compare_moves == True):
                 # after getting the name and moves a fighter create stores procedure will get called 
