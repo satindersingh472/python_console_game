@@ -110,8 +110,8 @@ def check_lists(parent_list,child_list):
     for item in child_list:
         if item not in parent_list:
             return False
-
-        return True
+    
+    return True
 
 # create a fighter will create a fighter with given client id
 def create_fighter(client_id):
@@ -131,25 +131,30 @@ def create_fighter(client_id):
             print('--------------------------------')
         print('Please pick any of the 4 moves from the above by typing their move number')
         # ask the user for 4 inputs for the moves
-        move_one = input('Enter Number 1: ')
-        move_two = input('Enter number 2: ')
-        move_three = input('Enter number 3: ')
-        move_four = input('Enter number 4: ')
-        moves = [move_one,move_two,move_three,move_four]
-        compare_moves = check_lists(available_moves,moves)
-        if(compare_moves == True):
-            # after getting the name and moves a fighter create stores procedure will get called 
-            # it will take 6 arguments in total
-            added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
-            print('fighter is added')
-            return added_fighter
-        # if fighter add is successful then statement is printed and function will be returned
-            
-        elif(compare_moves == False):
-            # if not then function will continue asking for the correct inputs
-            print('Please enter the correct id from the below list of move id(s)')
-            print(available_moves)
-            print('--------------------------------------------------------')
+        while(True):
+            move_one = input('Enter Number 1: ')
+            move_one = int(move_one)
+            move_two = input('Enter number 2: ')
+            move_two = int(move_two)
+            move_three = input('Enter number 3: ')
+            move_three = int(move_three)
+            move_four = input('Enter number 4: ')
+            move_four = int(move_four)
+            moves = [move_one,move_two,move_three,move_four]
+            compare_moves = check_lists(available_moves,moves)
+            if(compare_moves == True):
+                # after getting the name and moves a fighter create stores procedure will get called 
+                # it will take 6 arguments in total
+                added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
+                print('fighter is added')
+                return added_fighter
+            # if fighter add is successful then statement is printed and function will be returned
+                
+            elif(compare_moves == False):
+                # if not then function will continue asking for the correct inputs
+                print('Please enter the correct id from the below list of move id(s)')
+                print(available_moves)
+                print('--------------------------------------------------------')
 
 # pick create fighter will use both create_fighter and fighters_of_client()
 # based on conditions it will execute one of these function
