@@ -89,6 +89,7 @@ def login_signup():
 
 # all moves will show all the moves available
 def all_moves():
+
     results = conn_exe_close('call all_moves()',[])
     if(results):
         return results
@@ -114,7 +115,7 @@ def check_lists(parent_list,child_list):
     for item in child_list:
         if item not in parent_list:
             return False
-    
+            
     return True
 
 # create a fighter will create a fighter with given client id
@@ -137,29 +138,34 @@ def create_fighter(client_id):
         # ask the user for 4 inputs for the moves
         while(True):
             move_one = input('Enter Number 1: ')
-            move_one = int(move_one)
             move_two = input('Enter number 2: ')
-            move_two = int(move_two)
             move_three = input('Enter number 3: ')
-            move_three = int(move_three)
             move_four = input('Enter number 4: ')
-            move_four = int(move_four)
             moves = [move_one,move_two,move_three,move_four]
-            # check if moves are valid and from one of the option available
-            compare_moves = check_lists(available_moves,moves)
-            if(compare_moves == True):
-                # after getting the name and moves a fighter create stores procedure will get called 
-                # it will take 6 arguments in total
-                added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
-                print('fighter is added')
-                return added_fighter
-            # if fighter add is successful then statement is printed and function will be returned
-                
-            elif(compare_moves == False):
-                # if not then function will continue asking for the correct inputs
-                print('Please enter the correct id from the below list of move id(s)')
-                print(available_moves)
-                print('--------------------------------------------------------')
+            moves_int = []
+            try:
+                for move in moves:
+                    move = int(move)
+                    moves_int.append(move)
+                    # check if moves are valid and from one of the option available
+                    compare_moves = check_lists(available_moves,moves_int)
+                    if(compare_moves == True):
+                        # after getting the name and moves a fighter create stores procedure will get called 
+                        # it will take 6 arguments in total
+                        added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
+                        print('fighter is added')
+                        return added_fighter
+                    # if fighter add is successful then statement is printed and function will be returned
+                    
+                    elif(compare_moves == False):
+                        # if not then function will continue asking for the correct inputs
+                        print('Please enter the correct id from the below list of move id(s)')
+                        print(available_moves)
+                        print('--------------------------------------------------------')
+            except ValueError as error:
+                print('Value Error:', error)
+                print('Please enter valid integer')
+            
 
 # pick create fighter will use both create_fighter and fighters_of_client()
 # based on conditions it will execute one of these function
@@ -470,7 +476,7 @@ def check_winner(health_opponent, health_user):
 def play_game():
     client_result = login_signup()
     client_id = client_result[0][0]
-    client_name = client_result[0][0]
+    client_name = client_result[0][1]
     fighter_id =  pick_create_fighter(client_id)
     opponent_id = choose_opponent()
     diff_level = difficulty_level()
