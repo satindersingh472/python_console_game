@@ -192,19 +192,23 @@ def pick_create_fighter(client_id):
                         print('Fighter ID:',result[0],': ',result[1].decode('utf-8'))
                         print('-----------------------------------------------------')
                     while(True):
-                        # ask the user to input the fighter id
-                        choose_fighter = input('Please enter the fighter id: ')
-                        # if chosen fighter is available then it will return the function with chosen fighter id
-                        if (choose_fighter in fighters_available):
-                        # convert the fighter id to int because database accepts int for id
+                        try:
+                            # ask the user to input the fighter id
+                            choose_fighter = input('Please enter the fighter id: ')
+                            # if chosen fighter is available then it will return the function with chosen fighter id
+                            # convert the fighter id to int because database accepts int for id
                             choose_fighter = int(choose_fighter)
-                            return choose_fighter
-                            # if chosen fighter is not available then the msg is printed and the function continued
-                        elif(choose_fighter not in fighters_available):
-                            print('Please enter a valid number for a fighter ID from the list of fighters')
-                            print('List of available fighters')
-                            print(fighters_available)
-                            print('---------------------------------------------')
+                            if (choose_fighter in fighters_available):
+                                return choose_fighter
+                                # if chosen fighter is not available then the msg is printed and the function continued
+                            elif(choose_fighter not in fighters_available):
+                                print('Please enter a valid number for a fighter ID from the list of fighters')
+                                print('List of available fighters')
+                                print(fighters_available)
+                                print('---------------------------------------------')
+                        except ValueError as error:
+                            print('Please enter number only')
+                            print('Value Error: ', error)
                 # if not fighter exists for a client then go back and ask for the fighter to create 
                 # with a name and four moves
                 elif(not results):
