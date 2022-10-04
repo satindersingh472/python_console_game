@@ -206,6 +206,7 @@ def pick_create_fighter(client_id):
                                 print('List of available fighters')
                                 print(fighters_available)
                                 print('---------------------------------------------')
+                        # if user enter the aphabet instead of number then user will taken back to enter the input
                         except ValueError as error:
                             print('Please enter number only')
                             print('Value Error: ', error)
@@ -226,6 +227,7 @@ def pick_create_fighter(client_id):
         # if user entered something else instead of 1 or 2 then user will sent back to starting
         # and asked again to choose option 1 or 2..
         else:
+            print('-----------------------------')
             print('Please select option 1 or 2 ')
             print('------------------------')
 
