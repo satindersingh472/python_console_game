@@ -9,3 +9,7 @@ def check_lists(list1,list2):
         return True
 
 check_lists(list1,list2)
+enter_data = input('please enter number: ')
+enter_data = int(enter_data)
+if 0<= enter_data < len(list2):
+    print(list2[enter_data-1])
