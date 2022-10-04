@@ -1,7 +1,7 @@
 from random import *
 import secrets
 # importing helpers from module to use in app.py
-from operator import indexOf
+from operator import indexOf, truediv
 from dbhelpers import conn_exe_close
 
 # wherever the conn_exe_function will get used it will take 2 arguments
@@ -73,7 +73,6 @@ def login_signup():
                 return result
             elif(not result):
                 print('---------------------------')
-
         else:
             print('Not a valid selection, Please select from option 1 or option 2 only.')
             print('---------------------------------------------------------')
@@ -104,8 +103,15 @@ def fighters_of_client(client_id):
         return result
         # if no fighter then it will just print the message
     elif(len(result) == 0):
-        print('No fighter exists for ',client_name.decode('utf-8'))
+        print('No fighter exists for ')
         print('---------------------------------------------------')
+
+def check_lists(parent_list,child_list):
+    for item in child_list:
+        if item not in parent_list:
+            return False
+
+        return True
 
 # create a fighter will create a fighter with given client id
 def create_fighter(client_id):
@@ -123,25 +129,23 @@ def create_fighter(client_id):
             print('Lower Damage Range: ', result[2].decode('utf-8'))
             print('Upper Damage Range: ', result[3].decode('utf-8'))
             print('--------------------------------')
-            print('Please pick any of the 4 moves from the above by typing their move number')
+        print('Please pick any of the 4 moves from the above by typing their move number')
         # ask the user for 4 inputs for the moves
         move_one = input('Enter Number 1: ')
         move_two = input('Enter number 2: ')
         move_three = input('Enter number 3: ')
         move_four = input('Enter number 4: ')
         moves = [move_one,move_two,move_three,move_four]
-        for move in moves:
-            move = int(move)
-        if move in available_moves:
+        compare_moves = check_lists(available_moves,moves)
+        if(compare_moves == True):
             # after getting the name and moves a fighter create stores procedure will get called 
             # it will take 6 arguments in total
             added_fighter = conn_exe_close('call create_fighter(?,?,?,?,?,?)',[name,client_id,move_one,move_two,move_three,move_four])
-            return added_fighter
-        if(added_fighter):
-        # if fighter add is successful then statement is printed and function will be returned
             print('fighter is added')
             return added_fighter
-        elif(not added_fighter):
+        # if fighter add is successful then statement is printed and function will be returned
+            
+        elif(compare_moves == False):
             # if not then function will continue asking for the correct inputs
             print('Please enter the correct id from the below list of move id(s)')
             print(available_moves)
@@ -174,10 +178,10 @@ def pick_create_fighter(client_id):
                     while(True):
                         # ask the user to input the fighter id
                         choose_fighter = input('Please enter the fighter id: ')
-                        # convert the fighter id to int because database accepts int for id
-                        choose_fighter = int(choose_fighter)
                         # if chosen fighter is available then it will return the function with chosen fighter id
                         if (choose_fighter in fighters_available):
+                        # convert the fighter id to int because database accepts int for id
+                            choose_fighter = int(choose_fighter)
                             return choose_fighter
                             # if chosen fighter is not available then the msg is printed and the function continued
                         elif(choose_fighter not in fighters_available):
